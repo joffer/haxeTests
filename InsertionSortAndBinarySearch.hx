@@ -5,7 +5,9 @@ import js.Lib;
 class Main {
 	
 	static function main() {
+		
 		startExample();
+		
 	}
 	
 	static function startExample():Void {
@@ -16,11 +18,11 @@ class Main {
 		for (i in 0...10) {
 			firstArr[i] = Std.int(Math.random() * 100);
 		}
-    
+		
 		trace("Unsorted array: \n" + firstArr.toString() + "\n");
 		
 		sortInsertion(firstArr);
-    
+		
 		trace("\nSorted array: \n" + firstArr.toString());
 		
 		neededValue = 63;
@@ -28,9 +30,9 @@ class Main {
 		var needed:Int = findInSortedArray(neededValue, firstArr);
 		
 		if (needed >= 0) {
-			trace("We found " + neededValue + ", it was on " + needed + " position of our array");
+			trace("* * * * We found " + neededValue + ", it was on " + ++needed + "th position of our array");
 		} else {
-			trace("Sorry, the " + neededValue + " was not found or error occured during search");
+			trace("= = = = Sorry, the " + neededValue + " was not found or error occured during search");
 		}
 		
 	}
@@ -44,6 +46,12 @@ class Main {
 		
 		var tempValue:Int = 0;
 		var counter:Int = 0;
+		
+		if (arr[0] > arr[1]) {
+			tempValue = arr[0];
+			arr[0] = arr[1];
+			arr[1] = tempValue;
+		}
 		
 		for (i in 1...arr.length - 1) {
 			if (arr[i] > arr[i + 1]) {
@@ -69,34 +77,39 @@ class Main {
 	static function findInSortedArray(value:Int, arr:Array<Int>):Int {
 		
 		if (arr.length < 2) {
-			trace("Sorry, current array too short for search");
-			return -1;
-		}
+			if (value == arr[0]) {
+				return 0;
+			} else {
+				trace("Sorry, current array too short for search");
+				return -1;
+			}
+		} 
 		
 		var tempArr:Array<Int> = [];
 		var reverseFlag:Bool = false;
 		var middle:Int = 0;
-		var extendedIndex:Int = 0;
+		var cellIndex:Int = 0;
 		
 		tempArr = arr.copy();
 		
-		if (arr[0] > arr[arr.length - 1]) {
+		if (arr[0] > arr[1]) {
 			tempArr.reverse();
 			reverseFlag = true;
 		}
 		
-		extendedIndex = Std.int(tempArr.length / 2);
-		middle = extendedIndex;
+		cellIndex = middle = Std.int(tempArr.length / 2);
 		
 		while (tempArr.length > 0) {
 			if (value < tempArr[middle] && middle > 0) {
 				tempArr = tempArr.slice(0, middle);
 				middle = Std.int(tempArr.length / 2);
-				extendedIndex = extendedIndex - Math.round(tempArr.length/2);
+				cellIndex -= Math.round(tempArr.length / 2);
+				
 			} else if (value > tempArr[middle] && middle > 0){
 				tempArr = tempArr.slice(middle);
 				middle = Std.int(tempArr.length / 2);
-				extendedIndex = extendedIndex + middle;
+				cellIndex += middle;
+				
 			} else {
 				if (value == tempArr[middle] && middle == 0) {
 					return 0;	
@@ -106,11 +119,11 @@ class Main {
 			}
 		}
 		
-		if (extendedIndex >= 0 && middle != 0){
+		if (cellIndex >= 0 && middle != 0){
 			if (reverseFlag == false) {			
-				return extendedIndex;
+				return cellIndex;
 			} else {
-				return arr.length - extendedIndex - 1;
+				return arr.length - cellIndex - 1;
 			}
 		} else {
 			return -1;
