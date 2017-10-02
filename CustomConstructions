@@ -22,5 +22,4 @@ class CustomConstructions {
 		
 		return array;
 	}
-
 }
