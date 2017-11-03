@@ -1,4 +1,3 @@
-```
 package;
 
 import js.Lib; 
@@ -17,4 +16,3 @@ class Main {
 		trace("3D-dimension point, coord by axle Z: " + endPoint.z);
 	}
 }
-```
